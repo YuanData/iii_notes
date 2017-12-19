@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="">
+		<script src=""></script>
+		<title>加入會員</title>
+	</head>
+	<body>
+		<h3>加入會員</h3>
+			<!-- <form action="mailto" method="post" enctype="text/plain"> -->
+			<form>
+				姓名：<input type="text" name="studentname"><br>
+				密碼：<input type="password" minlength="4" maxlength="6" name="PW"><br>
+				<table width="50%">
+					<tr>
+						<td>
+							<fieldset>
+							<legend>性別</legend>
+								<input type="radio" checked name="gender" value="M" >男
+								<input type="radio" name="gender" value="F">女
+							</fieldset>							
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<fieldset>
+							<legend>興趣</legend>
+								<input type="checkbox" checked name="interest" value="R" >閱讀
+								<input type="checkbox" name="interest" value="S">睡覺
+								<input type="checkbox" name="interest" value="T">旅行
+							</fieldset>	
+						</td>
+					</tr>				
+				</table>
+				
+		
+				
+			<!-- 	性別：	<input type="radio" checked name="gender" value="M" >男
+						<input type="radio" name="gender" value="F">女
+						<input type="radio" readonly name="gender" value="N">保密<br>
+				興趣：	<input type="checkbox" checked name="interest" value="R" >閱讀
+						<input type="checkbox" name="interest" value="S">睡覺
+						<input type="checkbox" name="interest" value="T">旅行<br> -->
+				血型：	<select name="blood">
+							<option value=""></option>
+							<option value="O" disabled>O</option>
+							<option value="A">A</option>
+							<option value="B">B</option>
+							<option value="AB">AB</option>
+						</select>
+				<br>
+				留言：	<textarea name="talk" rows="5" cols="10"></textarea>
+				<hr>
+				<input type="submit" value="傳送表單">
+				<input type="reset" value="重新填寫">
+				<button><img src="../images/img2/send.gif"></button>
+
+			</form>
+	</body>
+</html>

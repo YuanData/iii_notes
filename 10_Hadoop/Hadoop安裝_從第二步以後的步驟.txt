@@ -1,0 +1,221 @@
+
+===============================
+IN all
+===============================
+
+ln -s /usr/java/jdk1.7.0_79/ /usr/java/java
+
+vi /etc/profile
+
+export JAVA_HOME=/usr/java/java
+export JRE_HOME=$JAVA_HOME/jre
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib/rt.jar
+export PATH=$PATH:$JAVA_HOME/bin
+
+setenforce 0
+
+vi /etc/selinux/config
+
+SELINUX=disabled
+
+service iptables stop
+
+chkconfig iptables off
+
+vi /etc/ssh/ssh_config
+
+StrictHostKeyChecking no
+
+service sshd restart
+
+
+===============================
+IN master
+===============================
+
+
+vi /etc/hosts
+192.168.109.128 master
+192.168.109.129 slaver1
+192.168.109.130 slaver2
+
+ssh-keygen -t rsa -f ~/.ssh/id_rsa -P ""
+
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+ssh localhost
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@slaver1
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@slaver2
+
+wget "https://archive.apache.org/dist/hadoop/core/hadoop-2.7.3/hadoop-2.7.3.tar.gz"
+
+==============================
+IN slaver1
+==============================
+ssh-keygen -t rsa -f ~/.ssh/id_rsa -P ""
+
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+ssh localhost
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.109.128
+
+===============================
+IN master
+===============================
+
+tar -zxvf /tmp/hadoop-2.7.3.tar.gz
+
+mv hadoop-2.7.3 /opt
+
+vi /etc/profile
+
+export HADOOP_HOME=/opt/hadoop/
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
+
+source /etc/profile
+
+vi /opt/hadoop-2.7.3/libexec/hadoop-config.sh
+
+export JAVA_HOME=/usr/java/java
+
+vi /opt/hadoop-2.7.3/etc/hadoop/hadoop-env.sh
+
+export JAVA_HOME=/usr/java/java
+export HADOOP_HOME=/opt/hadoop
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
+
+cp /opt/hadoop-2.7.3/etc/hadoop/mapred-site.xml.template /opt/hadoop-2.7.3/etc/hadoop/mapred-site.xml
+
+**直接把老師在GITHUB的檔案覆蓋到資料夾內就好(共有四個)**
+vi /opt/hadoop-2.7.3/etc/hadoop/mapred-site.xml
+
+wget http://apache.stu.edu.tw/zookeeper/zookeeper-3.4.9/zookeeper-3.4.9.tar.gz
+
+tar zxvf zookeeper-3.4.9.tar.gz
+
+mv zookeeper-3.4.9 /opt
+
+ln -s /opt/zookeeper-3.4.9 /opt/zookeeper
+
+cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg
+
+vi /opt/zookeeper/conf/zoo.cfg
+
+**路徑改加上opt**
+dataDir=/opt/zookeeper
+clientPort=2181
+server.1=master:2888:3888
+server.2=slaver1:2888:3888
+server.3=slaver2:2888:3888
+
+vi /opt/zookeeper/myid
+
+**複製到其他兩台 (完成後,完成上述各與檔案編號,例如: 2、3)**
+scp -rp /opt/zookeeper root@slaver1:/opt/zookeeper
+
+scp -rp /opt/zookeeper root@slaver2:/opt/zookeeper
+
+===============================
+IN master
+===============================
+scp -rp /etc/hosts root@slaver1:/etc/hosts
+
+scp -rp /etc/hosts root@slaver2:/etc/hosts
+
+scp -rp /opt/hadoop-2.7.3/ root@slaver1:/opt/hadoop-2.7.3
+
+scp -rp /opt/hadoop-2.7.3/ root@slaver2:/opt/hadoop-2.7.3
+
+scp -rp /etc/profile root@slaver1:/etc/profile
+
+scp -rp /etc/profile root@slaver2:/etc/profile
+
+===============================
+IN all
+===============================
+ln -s /opt/hadoop-2.7.3 /opt/hadoop
+
+service ntpd start
+
+/opt/zookeeper/bin/zkServer.sh start
+
+/opt/zookeeper/bin/zkServer.sh status (上述 zk 全部開啟後再做)
+
+hadoop-daemon.sh start journalnode
+
+
+===============================
+IN master
+===============================
+mkdir -p $HADOOP_HOME/tmp
+
+mkdir -p $HADOOP_HOME/tmp/dfs/name
+
+mkdir -p $HADOOP_HOME/tmp/dfs/data
+
+mkdir -p $HADOOP_HOME/tmp/journal
+
+chmod 777 $HADOOP_HOME/tmp
+
+scp -rp $HADOOP_HOME/tmp slaver1:/opt/hadoop
+
+scp -rp $HADOOP_HOME/tmp slaver1:/opt/hadoop
+
+vi /opt/hadoop/etc/hadoop/slaves
+**不留下localhost**
+master
+slaver1
+slaver2
+
+hdfs zkfc -formatZK
+
+hadoop namenode -format mycluster
+
+hadoop-daemon.sh start namenode
+
+===============================
+IN slaver1
+===============================
+
+hdfs namenode -bootstrapStandby
+
+hadoop-daemon.sh start namenode
+
+
+===============================
+IN master & slaver1
+===============================
+
+hadoop-daemon.sh start zkfc
+
+===============================
+IN all
+===============================
+
+hadoop-daemon.sh start datanode
+
+mr-jobhistory-daemon.sh start historyserver
+
+===============================
+IN master
+===============================
+
+start-yarn.sh

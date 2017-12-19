@@ -1,0 +1,96 @@
+﻿mysql> #ch3作業練習
+mysql> #Q1
+mysql> select * from dept;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
++--------+------------+----------+
+4 rows in set (0.05 sec)
+
+mysql> #Q2
+mysql> select empno,ename,job,hiredate
+    -> from emp;
++-------+--------+-----------+---------------------+
+| empno | ename  | job       | hiredate            |
++-------+--------+-----------+---------------------+
+|  7369 | SMITH  | CLERK     | 1980-12-17 00:00:00 |
+|  7499 | ALLEN  | SALESMAN  | 1981-02-20 00:00:00 |
+|  7521 | WARD   | SALESMAN  | 1981-02-22 00:00:00 |
+|  7566 | JONES  | MANAGER   | 1981-04-02 00:00:00 |
+|  7654 | MARTIN | SALESMAN  | 1981-09-28 00:00:00 |
+|  7698 | BLAKE  | MANAGER   | 1981-05-01 00:00:00 |
+|  7782 | CLARK  | MANAGER   | 1981-06-09 00:00:00 |
+|  7788 | SCOTT  | ANALYST   | 1982-12-09 00:00:00 |
+|  7839 | KING   | PRESIDENT | 1981-11-17 00:00:00 |
+|  7844 | TURNER | SALESMAN  | 1981-09-08 00:00:00 |
+|  7876 | ADAMS  | CLERK     | 1983-01-12 00:00:00 |
+|  7900 | JAMES  | CLERK     | 1981-12-03 00:00:00 |
+|  7902 | FORD   | ANALYST   | 1981-12-03 00:00:00 |
+|  7934 | MILLER | CLERK     | 1982-01-23 00:00:00 |
++-------+--------+-----------+---------------------+
+14 rows in set (0.02 sec)
+
+mysql> #Q3
+mysql> select distinct job from emp;
++-----------+
+| job       |
++-----------+
+| CLERK     |
+| SALESMAN  |
+| MANAGER   |
+| ANALYST   |
+| PRESIDENT |
++-----------+
+5 rows in set (0.00 sec)
+
+mysql> #Q4
+mysql> select empno'Emp#',ename Employee,job Job,hiredate 'Hire Date'
+    -> from emp;
++------+----------+-----------+---------------------+
+| Emp# | Employee | Job       | Hire Date           |
++------+----------+-----------+---------------------+
+| 7369 | SMITH    | CLERK     | 1980-12-17 00:00:00 |
+| 7499 | ALLEN    | SALESMAN  | 1981-02-20 00:00:00 |
+| 7521 | WARD     | SALESMAN  | 1981-02-22 00:00:00 |
+| 7566 | JONES    | MANAGER   | 1981-04-02 00:00:00 |
+| 7654 | MARTIN   | SALESMAN  | 1981-09-28 00:00:00 |
+| 7698 | BLAKE    | MANAGER   | 1981-05-01 00:00:00 |
+| 7782 | CLARK    | MANAGER   | 1981-06-09 00:00:00 |
+| 7788 | SCOTT    | ANALYST   | 1982-12-09 00:00:00 |
+| 7839 | KING     | PRESIDENT | 1981-11-17 00:00:00 |
+| 7844 | TURNER   | SALESMAN  | 1981-09-08 00:00:00 |
+| 7876 | ADAMS    | CLERK     | 1983-01-12 00:00:00 |
+| 7900 | JAMES    | CLERK     | 1981-12-03 00:00:00 |
+| 7902 | FORD     | ANALYST   | 1981-12-03 00:00:00 |
+| 7934 | MILLER   | CLERK     | 1982-01-23 00:00:00 |
++------+----------+-----------+---------------------+
+14 rows in set (0.00 sec)
+
+mysql> #Q5
+mysql> select concat(ename,' ,',job)'Employee and Title'
+    -> from emp;
++--------------------+
+| Employee and Title |
++--------------------+
+| SMITH ,CLERK       |
+| ALLEN ,SALESMAN    |
+| WARD ,SALESMAN     |
+| JONES ,MANAGER     |
+| MARTIN ,SALESMAN   |
+| BLAKE ,MANAGER     |
+| CLARK ,MANAGER     |
+| SCOTT ,ANALYST     |
+| KING ,PRESIDENT    |
+| TURNER ,SALESMAN   |
+| ADAMS ,CLERK       |
+| JAMES ,CLERK       |
+| FORD ,ANALYST      |
+| MILLER ,CLERK      |
++--------------------+
+14 rows in set (0.02 sec)
+
+mysql> notee

@@ -1,0 +1,69 @@
+mysql> #Q1
+mysql> create table department
+    -> (id	numeric(7)	not null,
+    -> name	varchar(24)	not null);
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> #Q2
+mysql> insert into department
+    -> select deptno, dname
+    -> from dept;
+Query OK, 4 rows affected (0.02 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> #Q3
+mysql> create table employee
+    -> (id		numeric(7)	not null,
+    -> last_name	varchar(24)	not null,
+    -> first_name	varchar(24),
+    -> dept_id		numeric(7));
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> #Q4
+mysql> alter table employee
+    -> modify column last_name varchar(40);
+Query OK, 0 rows affected (0.27 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> #Q5
+mysql> create table employee2
+    -> as
+    -> select empno id, ename last_name, deptno dept_id
+    -> from emp;
+Query OK, 14 rows affected (0.25 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> #Q6
+mysql> drop table employee;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> #Q7
+mysql> alter table employee2
+    -> rename to employee;
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> #Q8
+mysql> alter table employee
+    -> drop column last_name;
+Query OK, 0 rows affected (0.44 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> #Q9
+mysql> alter table employee
+    -> add column salary numeric(7);
+Query OK, 0 rows affected (0.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> #Q10
+mysql> alter table employee
+    -> add constraint pk_employee_id primary key (id);
+Query OK, 0 rows affected (0.45 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> #Q11
+mysql> alter table employee
+    -> add constraint fk_employee_deptid foreign key(dept_id) references dept(deptno);
+Query OK, 14 rows affected (0.55 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> notee

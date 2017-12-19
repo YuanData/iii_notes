@@ -1,0 +1,148 @@
+mysql> #Q1
+mysql> select e.ename, e.deptno, d.dname, d.loc
+    -> from dept d right join emp e on d.deptno = e.deptno;
++--------+--------+------------+----------+
+| ename  | deptno | dname      | loc      |
++--------+--------+------------+----------+
+| CLARK  |     10 | ACCOUNTING | NEW YORK |
+| KING   |     10 | ACCOUNTING | NEW YORK |
+| MILLER |     10 | ACCOUNTING | NEW YORK |
+| SMITH  |     20 | RESEARCH   | DALLAS   |
+| JONES  |     20 | RESEARCH   | DALLAS   |
+| SCOTT  |     20 | RESEARCH   | DALLAS   |
+| ADAMS  |     20 | RESEARCH   | DALLAS   |
+| FORD   |     20 | RESEARCH   | DALLAS   |
+| ALLEN  |     30 | SALES      | CHICAGO  |
+| WARD   |     30 | SALES      | CHICAGO  |
+| MARTIN |     30 | SALES      | CHICAGO  |
+| BLAKE  |     30 | SALES      | CHICAGO  |
+| TURNER |     30 | SALES      | CHICAGO  |
+| JAMES  |     30 | SALES      | CHICAGO  |
++--------+--------+------------+----------+
+14 rows in set (0.00 sec)
+
+mysql> #Q2
+mysql> select e.ename, e.comm, d.dname, d.loc
+    -> from dept d right join emp e on d.deptno = e.deptno
+    -> where e.comm>0;
++--------+---------+-------+---------+
+| ename  | comm    | dname | loc     |
++--------+---------+-------+---------+
+| ALLEN  |  300.00 | SALES | CHICAGO |
+| WARD   |  500.00 | SALES | CHICAGO |
+| MARTIN | 1400.00 | SALES | CHICAGO |
++--------+---------+-------+---------+
+3 rows in set (0.00 sec)
+
+mysql> #Q3
+mysql> select e.ename,d.dname
+    -> from dept d right join emp e on d.deptno = e.deptno
+    -> where e.ename like '%A%';
++--------+------------+
+| ename  | dname      |
++--------+------------+
+| ALLEN  | SALES      |
+| WARD   | SALES      |
+| MARTIN | SALES      |
+| BLAKE  | SALES      |
+| CLARK  | ACCOUNTING |
+| ADAMS  | RESEARCH   |
+| JAMES  | SALES      |
++--------+------------+
+7 rows in set (0.00 sec)
+
+mysql> #Q4
+mysql> select e.ename, e.job, e.deptno, d.dname
+    -> from dept d join emp e on d.deptno = e.deptno
+    -> where d.loc='DALLAS'
+    -> order by 2;
++-------+---------+--------+----------+
+| ename | job     | deptno | dname    |
++-------+---------+--------+----------+
+| FORD  | ANALYST |     20 | RESEARCH |
+| SCOTT | ANALYST |     20 | RESEARCH |
+| SMITH | CLERK   |     20 | RESEARCH |
+| ADAMS | CLERK   |     20 | RESEARCH |
+| JONES | MANAGER |     20 | RESEARCH |
++-------+---------+--------+----------+
+5 rows in set (0.00 sec)
+
+mysql> #Q5
+mysql> select e1.ename 'Employee',e1.empno 'Emp#',e2.ename 'Manager',e2.empno 'Mgr#'
+    -> from emp e1 left join emp e2 on e1.mgr=e2.empno;
++----------+------+---------+------+
+| Employee | Emp# | Manager | Mgr# |
++----------+------+---------+------+
+| SMITH    | 7369 | FORD    | 7902 |
+| ALLEN    | 7499 | BLAKE   | 7698 |
+| WARD     | 7521 | BLAKE   | 7698 |
+| JONES    | 7566 | KING    | 7839 |
+| MARTIN   | 7654 | BLAKE   | 7698 |
+| BLAKE    | 7698 | KING    | 7839 |
+| CLARK    | 7782 | KING    | 7839 |
+| SCOTT    | 7788 | JONES   | 7566 |
+| KING     | 7839 | NULL    | NULL |
+| TURNER   | 7844 | BLAKE   | 7698 |
+| ADAMS    | 7876 | SCOTT   | 7788 |
+| JAMES    | 7900 | BLAKE   | 7698 |
+| FORD     | 7902 | JONES   | 7566 |
+| MILLER   | 7934 | CLARK   | 7782 |
++----------+------+---------+------+
+14 rows in set (0.00 sec)
+
+mysql> #Q6
+mysql> select e.ename, e.job, d.dname, e.sal, s.grade
+    ->  from emp e join dept d on e.deptno=d.deptno
+    ->  join salgrade s on(e.sal between s.losal and s.hisal)
+    -> order by 5,4;
++--------+-----------+------------+---------+-------+
+| ename  | job       | dname      | sal     | grade |
++--------+-----------+------------+---------+-------+
+| SMITH  | CLERK     | RESEARCH   |  800.00 |     1 |
+| JAMES  | CLERK     | SALES      |  950.00 |     1 |
+| ADAMS  | CLERK     | RESEARCH   | 1100.00 |     1 |
+| MARTIN | SALESMAN  | SALES      | 1250.00 |     2 |
+| WARD   | SALESMAN  | SALES      | 1250.00 |     2 |
+| MILLER | CLERK     | ACCOUNTING | 1300.00 |     2 |
+| TURNER | SALESMAN  | SALES      | 1500.00 |     3 |
+| ALLEN  | SALESMAN  | SALES      | 1600.00 |     3 |
+| CLARK  | MANAGER   | ACCOUNTING | 2450.00 |     4 |
+| BLAKE  | MANAGER   | SALES      | 2850.00 |     4 |
+| JONES  | MANAGER   | RESEARCH   | 2975.00 |     4 |
+| SCOTT  | ANALYST   | RESEARCH   | 3000.00 |     4 |
+| FORD   | ANALYST   | RESEARCH   | 3000.00 |     4 |
+| KING   | PRESIDENT | ACCOUNTING | 5000.00 |     5 |
++--------+-----------+------------+---------+-------+
+14 rows in set (0.03 sec)
+
+mysql> #Q7
+mysql> select a.ename Employee,a.hiredate 'Emp Hiredate',b.ename Manager,b.hiredate 'Mgr Hiredate'
+    ->  from emp a join emp b on a.mgr=b.empno
+    ->  where a.hiredate<b.hiredate;
++----------+---------------------+---------+---------------------+
+| Employee | Emp Hiredate        | Manager | Mgr Hiredate        |
++----------+---------------------+---------+---------------------+
+| SMITH    | 1980-12-17 00:00:00 | FORD    | 1981-12-03 00:00:00 |
+| ALLEN    | 1981-02-20 00:00:00 | BLAKE   | 1981-05-01 00:00:00 |
+| WARD     | 1981-02-22 00:00:00 | BLAKE   | 1981-05-01 00:00:00 |
+| JONES    | 1981-04-02 00:00:00 | KING    | 1981-11-17 00:00:00 |
+| BLAKE    | 1981-05-01 00:00:00 | KING    | 1981-11-17 00:00:00 |
+| CLARK    | 1981-06-09 00:00:00 | KING    | 1981-11-17 00:00:00 |
++----------+---------------------+---------+---------------------+
+6 rows in set (0.00 sec)
+
+mysql> #Q8
+mysql> select d.dname, d.loc, count(e.deptno) "Number of Peolpe", round( avg(e.sal),2) Salary
+    -> from dept d left join emp e on d.deptno = e.deptno
+    -> group by d.deptno;
++------------+----------+------------------+---------+
+| dname      | loc      | Number of Peolpe | Salary  |
++------------+----------+------------------+---------+
+| ACCOUNTING | NEW YORK |                3 | 2916.67 |
+| RESEARCH   | DALLAS   |                5 | 2175.00 |
+| SALES      | CHICAGO  |                6 | 1566.67 |
+| OPERATIONS | BOSTON   |                0 |    NULL |
++------------+----------+------------------+---------+
+4 rows in set (0.01 sec)
+
+mysql> notee

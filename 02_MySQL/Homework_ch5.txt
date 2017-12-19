@@ -1,0 +1,229 @@
+mysql> #Q1
+mysql> select curdate() '系統日期';
++--------------+
+| 系統日期     |
++--------------+
+| 2016-11-05   |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> #Q2
+mysql> select empno, ename, sal, round(sal*1.15) 'New Salary'
+    -> from emp;
++-------+--------+---------+------------+
+| empno | ename  | sal     | New Salary |
++-------+--------+---------+------------+
+|  7369 | SMITH  |  800.00 |        920 |
+|  7499 | ALLEN  | 1600.00 |       1840 |
+|  7521 | WARD   | 1250.00 |       1438 |
+|  7566 | JONES  | 2975.00 |       3421 |
+|  7654 | MARTIN | 1250.00 |       1438 |
+|  7698 | BLAKE  | 2850.00 |       3278 |
+|  7782 | CLARK  | 2450.00 |       2818 |
+|  7788 | SCOTT  | 3000.00 |       3450 |
+|  7839 | KING   | 5000.00 |       5750 |
+|  7844 | TURNER | 1500.00 |       1725 |
+|  7876 | ADAMS  | 1100.00 |       1265 |
+|  7900 | JAMES  |  950.00 |       1093 |
+|  7902 | FORD   | 3000.00 |       3450 |
+|  7934 | MILLER | 1300.00 |       1495 |
++-------+--------+---------+------------+
+14 rows in set (0.02 sec)
+
+mysql> #Q3
+mysql> select empno, ename, sal, round(sal*1.15) 'New Salary', round((sal*1.15)-sal) 'Increase'
+    -> from emp;
++-------+--------+---------+------------+----------+
+| empno | ename  | sal     | New Salary | Increase |
++-------+--------+---------+------------+----------+
+|  7369 | SMITH  |  800.00 |        920 |      120 |
+|  7499 | ALLEN  | 1600.00 |       1840 |      240 |
+|  7521 | WARD   | 1250.00 |       1438 |      188 |
+|  7566 | JONES  | 2975.00 |       3421 |      446 |
+|  7654 | MARTIN | 1250.00 |       1438 |      188 |
+|  7698 | BLAKE  | 2850.00 |       3278 |      428 |
+|  7782 | CLARK  | 2450.00 |       2818 |      368 |
+|  7788 | SCOTT  | 3000.00 |       3450 |      450 |
+|  7839 | KING   | 5000.00 |       5750 |      750 |
+|  7844 | TURNER | 1500.00 |       1725 |      225 |
+|  7876 | ADAMS  | 1100.00 |       1265 |      165 |
+|  7900 | JAMES  |  950.00 |       1093 |      143 |
+|  7902 | FORD   | 3000.00 |       3450 |      450 |
+|  7934 | MILLER | 1300.00 |       1495 |      195 |
++-------+--------+---------+------------+----------+
+14 rows in set (0.00 sec)
+
+mysql> #Q4
+mysql> select ename, hiredate,
+    -> date_format(
+    -> case weekday(adddate(hiredate, interval 6 month))
+    -> when 0 then adddate(hiredate, interval 6 month)
+    -> else adddate( adddate(hiredate, interval 6 month), interval (7-weekday(adddate(hiredate, interval 6 month))) day)
+    -> end
+    -> , '%W, the %D of %M') REVIEW
+    -> from emp;
++--------+---------------------+------------------------------+
+| ename  | hiredate            | REVIEW                       |
++--------+---------------------+------------------------------+
+| SMITH  | 1980-12-17 00:00:00 | Monday, the 22nd of June     |
+| ALLEN  | 1981-02-20 00:00:00 | Monday, the 24th of August   |
+| WARD   | 1981-02-22 00:00:00 | Monday, the 24th of August   |
+| JONES  | 1981-04-02 00:00:00 | Monday, the 5th of October   |
+| MARTIN | 1981-09-28 00:00:00 | Monday, the 29th of March    |
+| BLAKE  | 1981-05-01 00:00:00 | Monday, the 2nd of November  |
+| CLARK  | 1981-06-09 00:00:00 | Monday, the 14th of December |
+| SCOTT  | 1982-12-09 00:00:00 | Monday, the 13th of June     |
+| KING   | 1981-11-17 00:00:00 | Monday, the 17th of May      |
+| TURNER | 1981-09-08 00:00:00 | Monday, the 8th of March     |
+| ADAMS  | 1983-01-12 00:00:00 | Monday, the 18th of July     |
+| JAMES  | 1981-12-03 00:00:00 | Monday, the 7th of June      |
+| FORD   | 1981-12-03 00:00:00 | Monday, the 7th of June      |
+| MILLER | 1982-01-23 00:00:00 | Monday, the 26th of July     |
++--------+---------------------+------------------------------+
+14 rows in set (0.00 sec)
+
+mysql> #Q5
+mysql> select ename, timestampdiff(month, hiredate, now()) 'MONTHS_WORKED'
+    -> from emp;
++--------+---------------+
+| ename  | MONTHS_WORKED |
++--------+---------------+
+| SMITH  |           430 |
+| ALLEN  |           428 |
+| WARD   |           428 |
+| JONES  |           427 |
+| MARTIN |           421 |
+| BLAKE  |           426 |
+| CLARK  |           424 |
+| SCOTT  |           406 |
+| KING   |           419 |
+| TURNER |           421 |
+| ADAMS  |           405 |
+| JAMES  |           419 |
+| FORD   |           419 |
+| MILLER |           417 |
++--------+---------------+
+14 rows in set (0.00 sec)
+
+mysql> #Q6
+mysql> select concat(ename,' earns ',sal,' monthly but wants ',sal*3) 'Dream Salaries' 
+    -> from emp;
++------------------------------------------------+
+| Dream Salaries                                 |
++------------------------------------------------+
+| SMITH earns 800.00 monthly but wants 2400.00   |
+| ALLEN earns 1600.00 monthly but wants 4800.00  |
+| WARD earns 1250.00 monthly but wants 3750.00   |
+| JONES earns 2975.00 monthly but wants 8925.00  |
+| MARTIN earns 1250.00 monthly but wants 3750.00 |
+| BLAKE earns 2850.00 monthly but wants 8550.00  |
+| CLARK earns 2450.00 monthly but wants 7350.00  |
+| SCOTT earns 3000.00 monthly but wants 9000.00  |
+| KING earns 5000.00 monthly but wants 15000.00  |
+| TURNER earns 1500.00 monthly but wants 4500.00 |
+| ADAMS earns 1100.00 monthly but wants 3300.00  |
+| JAMES earns 950.00 monthly but wants 2850.00   |
+| FORD earns 3000.00 monthly but wants 9000.00   |
+| MILLER earns 1300.00 monthly but wants 3900.00 |
++------------------------------------------------+
+14 rows in set (0.00 sec)
+
+mysql> #Q7
+mysql> select ename, lpad(sal,15,'$') SALARY
+    -> from emp;
++--------+-----------------+
+| ename  | SALARY          |
++--------+-----------------+
+| SMITH  | $$$$$$$$$800.00 |
+| ALLEN  | $$$$$$$$1600.00 |
+| WARD   | $$$$$$$$1250.00 |
+| JONES  | $$$$$$$$2975.00 |
+| MARTIN | $$$$$$$$1250.00 |
+| BLAKE  | $$$$$$$$2850.00 |
+| CLARK  | $$$$$$$$2450.00 |
+| SCOTT  | $$$$$$$$3000.00 |
+| KING   | $$$$$$$$5000.00 |
+| TURNER | $$$$$$$$1500.00 |
+| ADAMS  | $$$$$$$$1100.00 |
+| JAMES  | $$$$$$$$$950.00 |
+| FORD   | $$$$$$$$3000.00 |
+| MILLER | $$$$$$$$1300.00 |
++--------+-----------------+
+14 rows in set (0.00 sec)
+
+mysql> #Q8
+mysql> select ename, hiredate, dayname((hiredate)) DAY
+    -> from emp
+    -> order by weekday(hiredate);
++--------+---------------------+-----------+
+| ename  | hiredate            | DAY       |
++--------+---------------------+-----------+
+| MARTIN | 1981-09-28 00:00:00 | Monday    |
+| CLARK  | 1981-06-09 00:00:00 | Tuesday   |
+| KING   | 1981-11-17 00:00:00 | Tuesday   |
+| TURNER | 1981-09-08 00:00:00 | Tuesday   |
+| SMITH  | 1980-12-17 00:00:00 | Wednesday |
+| ADAMS  | 1983-01-12 00:00:00 | Wednesday |
+| JONES  | 1981-04-02 00:00:00 | Thursday  |
+| SCOTT  | 1982-12-09 00:00:00 | Thursday  |
+| JAMES  | 1981-12-03 00:00:00 | Thursday  |
+| FORD   | 1981-12-03 00:00:00 | Thursday  |
+| ALLEN  | 1981-02-20 00:00:00 | Friday    |
+| BLAKE  | 1981-05-01 00:00:00 | Friday    |
+| MILLER | 1982-01-23 00:00:00 | Saturday  |
+| WARD   | 1981-02-22 00:00:00 | Sunday    |
++--------+---------------------+-----------+
+14 rows in set (0.00 sec)
+
+mysql> #Q9
+mysql> select ename,
+    -> ifnull(comm, 'No Commission.') COMM
+    -> from emp;
++--------+----------------+
+| ename  | COMM           |
++--------+----------------+
+| SMITH  | No Commission. |
+| ALLEN  | 300.00         |
+| WARD   | 500.00         |
+| JONES  | No Commission. |
+| MARTIN | 1400.00        |
+| BLAKE  | No Commission. |
+| CLARK  | No Commission. |
+| SCOTT  | No Commission. |
+| KING   | No Commission. |
+| TURNER | 0.00           |
+| ADAMS  | No Commission. |
+| JAMES  | No Commission. |
+| FORD   | No Commission. |
+| MILLER | No Commission. |
++--------+----------------+
+14 rows in set (0.00 sec)
+
+mysql> #Q10
+mysql> select
+    -> concat( rpad(ename,7,' '),'| ',
+    -> repeat('*', round(sal/100,0)))
+    -> EMPLOYEE_AND_THEIR_SALARIES
+    -> from emp
+    -> order by sal desc;
++-------------------------------------------------------------+
+| EMPLOYEE_AND_THEIR_SALARIES                                 |
++-------------------------------------------------------------+
+| KING   | ************************************************** |
+| SCOTT  | ******************************                     |
+| FORD   | ******************************                     |
+| JONES  | ******************************                     |
+| BLAKE  | *****************************                      |
+| CLARK  | *************************                          |
+| ALLEN  | ****************                                   |
+| TURNER | ***************                                    |
+| MILLER | *************                                      |
+| WARD   | *************                                      |
+| MARTIN | *************                                      |
+| ADAMS  | ***********                                        |
+| JAMES  | **********                                         |
+| SMITH  | ********                                           |
++-------------------------------------------------------------+
+14 rows in set (0.00 sec)
+
+mysql> notee

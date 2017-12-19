@@ -1,0 +1,218 @@
+mysql> #Q1
+mysql> select o.ename,o.hiredate, o.sal
+    -> from emp o
+    -> where o.sal> all(select i.sal
+    -> from emp i
+    -> where i.job='Clerk');
++--------+---------------------+---------+
+| ename  | hiredate            | sal     |
++--------+---------------------+---------+
+| ALLEN  | 1981-02-20 00:00:00 | 1600.00 |
+| JONES  | 1981-04-02 00:00:00 | 2975.00 |
+| BLAKE  | 1981-05-01 00:00:00 | 2850.00 |
+| CLARK  | 1981-06-09 00:00:00 | 2450.00 |
+| SCOTT  | 1982-12-09 00:00:00 | 3000.00 |
+| KING   | 1981-11-17 00:00:00 | 5000.00 |
+| TURNER | 1981-09-08 00:00:00 | 1500.00 |
+| FORD   | 1981-12-03 00:00:00 | 3000.00 |
++--------+---------------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> #Q2
+mysql> select ename, hiredate
+    -> from emp
+    -> where HIREDATE > (select HIREDATE
+    -> from emp
+    -> where ENAME='Blake');
++--------+---------------------+
+| ename  | hiredate            |
++--------+---------------------+
+| MARTIN | 1981-09-28 00:00:00 |
+| CLARK  | 1981-06-09 00:00:00 |
+| SCOTT  | 1982-12-09 00:00:00 |
+| KING   | 1981-11-17 00:00:00 |
+| TURNER | 1981-09-08 00:00:00 |
+| ADAMS  | 1983-01-12 00:00:00 |
+| JAMES  | 1981-12-03 00:00:00 |
+| FORD   | 1981-12-03 00:00:00 |
+| MILLER | 1982-01-23 00:00:00 |
++--------+---------------------+
+9 rows in set (0.00 sec)
+
+mysql> #Q3
+mysql> select empno, ename, sal
+    -> from emp
+    -> where sal > (select avg(sal)
+    -> from emp)
+    -> order by sal desc;
++-------+-------+---------+
+| empno | ename | sal     |
++-------+-------+---------+
+|  7839 | KING  | 5000.00 |
+|  7788 | SCOTT | 3000.00 |
+|  7902 | FORD  | 3000.00 |
+|  7566 | JONES | 2975.00 |
+|  7698 | BLAKE | 2850.00 |
+|  7782 | CLARK | 2450.00 |
++-------+-------+---------+
+6 rows in set (0.00 sec)
+
+mysql> #Q4
+mysql> select e.empno, e.ename
+    -> from emp e
+    -> where e.empno in ( select d.empno
+    -> from emp d
+    -> where d.deptno = e.deptno 
+    -> and d.ename like '%T%')
+    -> order by e.deptno,e.empno;
++-------+--------+
+| empno | ename  |
++-------+--------+
+|  7369 | SMITH  |
+|  7788 | SCOTT  |
+|  7654 | MARTIN |
+|  7844 | TURNER |
++-------+--------+
+4 rows in set (0.00 sec)
+
+mysql> #Q5
+mysql> select e.ename, e.deptno, e.job
+    -> from emp e
+    -> where e.deptno = (select d.deptno
+    -> from dept d
+    -> where d.loc = 'DALLAS');
++-------+--------+---------+
+| ename | deptno | job     |
++-------+--------+---------+
+| SMITH |     20 | CLERK   |
+| JONES |     20 | MANAGER |
+| SCOTT |     20 | ANALYST |
+| ADAMS |     20 | CLERK   |
+| FORD  |     20 | ANALYST |
++-------+--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> #Q6
+mysql> select e.ename,e.sal
+    -> from emp e
+    -> where e.mgr in (select m.empno
+    -> from emp m
+    -> where m.ename='KING');
++-------+---------+
+| ename | sal     |
++-------+---------+
+| JONES | 2975.00 |
+| BLAKE | 2850.00 |
+| CLARK | 2450.00 |
++-------+---------+
+3 rows in set (0.02 sec)
+
+mysql> #Q7
+mysql> select e.deptno,e.ename,e.job
+    -> from emp e
+    -> where e.deptno =(select d.deptno
+    -> from dept d 
+    -> where d.dname ='Sales');
++--------+--------+----------+
+| deptno | ename  | job      |
++--------+--------+----------+
+|     30 | ALLEN  | SALESMAN |
+|     30 | WARD   | SALESMAN |
+|     30 | MARTIN | SALESMAN |
+|     30 | BLAKE  | MANAGER  |
+|     30 | TURNER | SALESMAN |
+|     30 | JAMES  | CLERK    |
++--------+--------+----------+
+6 rows in set (0.00 sec)
+
+mysql> #Q8
+mysql> select e.empno, e.ename, e.sal
+    -> from emp e
+    -> where e.sal > (select avg(e1.sal)
+    -> from emp e1)
+    -> and e.empno in (select e2.empno
+    -> from emp e2
+    -> where e2.ename like '%T%');
++-------+-------+---------+
+| empno | ename | sal     |
++-------+-------+---------+
+|  7788 | SCOTT | 3000.00 |
++-------+-------+---------+
+1 row in set (0.00 sec)
+
+mysql> #Q9
+mysql> select e.ename,e.deptno,e.sal
+    -> from emp e
+    -> where e.comm is not null and e.deptno in (select
+    -> m.deptno
+    -> from emp m
+    -> where m.sal=e.sal and m.ename<> e.ename and m.comm is not null);
++--------+--------+---------+
+| ename  | deptno | sal     |
++--------+--------+---------+
+| MARTIN |     30 | 1250.00 |
+| WARD   |     30 | 1250.00 |
++--------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> #Q10
+mysql> select e.ename,e.deptno,e.sal
+    -> from emp e
+    -> where exists(
+    -> select *
+    -> from emp e1
+    ->     where not (
+    ->     e1.sal<>e.sal or 
+    ->     ifnull(e1.comm,0)<>ifnull(e.comm,0) or
+    ->     e1.ename=e.ename))
+    ->     and e.deptno= (
+    ->     select e2.deptno
+    ->     from dept e2
+    ->     where e2.loc='Dallas');
++-------+--------+---------+
+| ename | deptno | sal     |
++-------+--------+---------+
+| SCOTT |     20 | 3000.00 |
+| FORD  |     20 | 3000.00 |
++-------+--------+---------+
+2 rows in set (0.02 sec)
+
+mysql> #Q11
+mysql> select e.ename,e.hiredate,e.sal
+    -> from emp e
+    -> where e.ename<>'Scott'
+    -> and e.sal=(
+    -> select m.sal
+    ->     from emp m
+    ->     where m.ename='Scott')
+    ->     and ifnull(e.comm,0)=(select ifnull(m.comm,0)
+    ->     from emp m
+    ->     where m.ename='Scott');
++-------+---------------------+---------+
+| ename | hiredate            | sal     |
++-------+---------------------+---------+
+| FORD  | 1981-12-03 00:00:00 | 3000.00 |
++-------+---------------------+---------+
+1 row in set (0.00 sec)
+
+mysql> #Q12
+mysql> select e.ename,e.hiredate, e.sal
+    -> from emp e
+    -> where e.sal> all(select m.sal
+    -> from emp m
+    -> where m.job='Clerk');
++--------+---------------------+---------+
+| ename  | hiredate            | sal     |
++--------+---------------------+---------+
+| ALLEN  | 1981-02-20 00:00:00 | 1600.00 |
+| JONES  | 1981-04-02 00:00:00 | 2975.00 |
+| BLAKE  | 1981-05-01 00:00:00 | 2850.00 |
+| CLARK  | 1981-06-09 00:00:00 | 2450.00 |
+| SCOTT  | 1982-12-09 00:00:00 | 3000.00 |
+| KING   | 1981-11-17 00:00:00 | 5000.00 |
+| TURNER | 1981-09-08 00:00:00 | 1500.00 |
+| FORD   | 1981-12-03 00:00:00 | 3000.00 |
++--------+---------------------+---------+
+8 rows in set (0.01 sec)
+
+mysql> notee

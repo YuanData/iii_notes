@@ -1,0 +1,183 @@
+mysql> #Q1
+mysql> select ename,sal
+    -> from emp
+    -> where sal>2850;
++-------+---------+
+| ename | sal     |
++-------+---------+
+| JONES | 2975.00 |
+| SCOTT | 3000.00 |
+| KING  | 5000.00 |
+| FORD  | 3000.00 |
++-------+---------+
+4 rows in set (0.00 sec)
+
+mysql> #Q2
+mysql> select ename,deptno
+    -> from emp
+    -> where empno=7566;
++-------+--------+
+| ename | deptno |
++-------+--------+
+| JONES |     20 |
++-------+--------+
+1 row in set (0.00 sec)
+
+mysql> #Q3
+mysql> select ename,sal
+    -> from emp
+    -> where sal not between 1500 and 2850;
++--------+---------+
+| ename  | sal     |
++--------+---------+
+| SMITH  |  800.00 |
+| WARD   | 1250.00 |
+| JONES  | 2975.00 |
+| MARTIN | 1250.00 |
+| SCOTT  | 3000.00 |
+| KING   | 5000.00 |
+| ADAMS  | 1100.00 |
+| JAMES  |  950.00 |
+| FORD   | 3000.00 |
+| MILLER | 1300.00 |
++--------+---------+
+10 rows in set (0.00 sec)
+
+mysql> #Q4
+mysql> select ename,job,hiredate
+    -> from emp
+    -> where hiredate between 19810220 and 19810501
+    -> order by hiredate asc;
++-------+----------+---------------------+
+| ename | job      | hiredate            |
++-------+----------+---------------------+
+| ALLEN | SALESMAN | 1981-02-20 00:00:00 |
+| WARD  | SALESMAN | 1981-02-22 00:00:00 |
+| JONES | MANAGER  | 1981-04-02 00:00:00 |
+| BLAKE | MANAGER  | 1981-05-01 00:00:00 |
++-------+----------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql> #Q5
+mysql> select ename,deptno
+    -> from emp
+    -> where deptno in (10,30)
+    -> order by ename;
++--------+--------+
+| ename  | deptno |
++--------+--------+
+| ALLEN  |     30 |
+| BLAKE  |     30 |
+| CLARK  |     10 |
+| JAMES  |     30 |
+| KING   |     10 |
+| MARTIN |     30 |
+| MILLER |     10 |
+| TURNER |     30 |
+| WARD   |     30 |
++--------+--------+
+9 rows in set (0.00 sec)
+
+mysql> #Q6
+mysql> select ename Employee,sal 'Monthly Salary'
+    -> from emp
+    -> where sal>1500 and (deptno=10 or deptno=30);
++----------+----------------+
+| Employee | Monthly Salary |
++----------+----------------+
+| ALLEN    |        1600.00 |
+| BLAKE    |        2850.00 |
+| CLARK    |        2450.00 |
+| KING     |        5000.00 |
++----------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> #Q7
+mysql> select ename,job,hiredate
+    -> from emp
+    -> where hiredate between 19820101 and 19821231;
++--------+---------+---------------------+
+| ename  | job     | hiredate            |
++--------+---------+---------------------+
+| SCOTT  | ANALYST | 1982-12-09 00:00:00 |
+| MILLER | CLERK   | 1982-01-23 00:00:00 |
++--------+---------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> #Q8
+mysql> select ename,job
+    -> from emp
+    -> where mgr is null;
++-------+-----------+
+| ename | job       |
++-------+-----------+
+| KING  | PRESIDENT |
++-------+-----------+
+1 row in set (0.00 sec)
+
+mysql> #Q9
+mysql> select ename,sal,comm
+    -> from emp
+    -> where comm is not null
+    -> order by sal desc,comm desc;
++--------+---------+---------+
+| ename  | sal     | comm    |
++--------+---------+---------+
+| ALLEN  | 1600.00 |  300.00 |
+| TURNER | 1500.00 |    0.00 |
+| MARTIN | 1250.00 | 1400.00 |
+| WARD   | 1250.00 |  500.00 |
++--------+---------+---------+
+4 rows in set (0.00 sec)
+
+mysql> #Q10
+mysql> select ename,job
+    -> from emp
+    -> where ename like '__A%';
++-------+---------+
+| ename | job     |
++-------+---------+
+| BLAKE | MANAGER |
+| CLARK | MANAGER |
+| ADAMS | CLERK   |
++-------+---------+
+3 rows in set (0.00 sec)
+
+mysql> #Q11
+mysql> select ename,mgr,deptno
+    -> from emp
+    -> where ename like '%LL%' and (deptno=30 or mgr=7782);
++--------+------+--------+
+| ename  | mgr  | deptno |
++--------+------+--------+
+| ALLEN  | 7698 |     30 |
+| MILLER | 7782 |     10 |
++--------+------+--------+
+2 rows in set (0.01 sec)
+
+mysql> #Q12
+mysql> select ename,job,sal
+    -> from emp
+    -> where job in('Clerk','Analyst') and sal not in (1000,3000,5000);
++--------+-------+---------+
+| ename  | job   | sal     |
++--------+-------+---------+
+| SMITH  | CLERK |  800.00 |
+| ADAMS  | CLERK | 1100.00 |
+| JAMES  | CLERK |  950.00 |
+| MILLER | CLERK | 1300.00 |
++--------+-------+---------+
+4 rows in set (0.00 sec)
+
+mysql> #Q13
+mysql> select ename,sal,comm
+    -> from emp
+    -> where comm>(sal*1.1);
++--------+---------+---------+
+| ename  | sal     | comm    |
++--------+---------+---------+
+| MARTIN | 1250.00 | 1400.00 |
++--------+---------+---------+
+1 row in set (0.00 sec)
+
+mysql> notee

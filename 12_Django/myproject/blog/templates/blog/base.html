@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+	<head>
+		<title>III's blog</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Kaushan+Script&effect=3d-float" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+	</head>
+	<body>
+		<div style="background-color:#30FFFF";>
+            <h1 class="font-effect-3d-float"><a href="/blog">III's Blog</a></h1>
+        </div>
+        {%block content%}{%endblock%}
+	</body>
+</html>

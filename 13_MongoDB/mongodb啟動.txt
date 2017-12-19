@@ -1,0 +1,11 @@
+cd¨ì³o¸Ì
+C:\Program Files\MongoDB\Server\3.4\bin
+
+1.
+>mongod --dbpath E:\mymongodb
+
+2.
+>mongo
+
+3.
+show databases

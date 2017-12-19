@@ -1,0 +1,18 @@
+/* 3_slideDownUp.html */
+#top{
+	text-transform:capitalize;
+	font:bold 130% Tahoma;
+	border:3px double steelblue;
+	width:300px;
+	text-align:center;
+	padding:10px;
+	margin-bottom:3px;
+}
+#content{
+	border:3px dotted steelblue;
+	width:300px;
+	text-align:center;
+	padding:10px;
+	
+	display:none;
+}
